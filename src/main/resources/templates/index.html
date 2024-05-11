@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.2/css/bootstrap.min.css}"/>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Checklist API Spring Boot</h1>
+        <hr />
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Ações</th>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>Completou?</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${todoItems}">
+                <td>
+                    <div class="btn btn-group-sm" role="group">
+                        <a class="btn btn-info" th:href="@{/edit/{id}(id=${item.id})}">
+                            <i class="bi bi-pencil-fill"></i> Editar</a>
+                        <a class="btn btn-danger" th:href="@{/delete/{id}(id=${item.id})}">
+                            <i class="bi bi-trash-fill"></i> Deletar</a>
+                    </div>
+                </td>
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.description}"></td>
+                <td>
+                    <div>
+                        <span th:if="${item.timeToStart != null}" th:text="'Data: '+ ${#temporals.format(item.timeToStart, 'dd/MM/yyyy')}" ></span>
+                        <span th:if="${item.timeToStart != null}" th:text="'Horas: '+ ${#temporals.format(item.timeToStart, 'HH:mm')}"></span>
+                        <span th:unless="${item.timeToStart != null}" th:text="'Data: Não disponível'"></span>
+                        <span th:unless="${item.timeToStart != null}" th:text="'Horas: Não disponível'"></span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span th:if="${item.timeToFinish != null}" th:text="'Data: '+ ${#temporals.format(item.timeToFinish, 'dd/MM/yyyy')}" ></span>
+                        <span th:if="${item.timeToFinish != null}" th:text="'Horas: '+ ${#temporals.format(item.timeToFinish, 'HH:mm')}"></span>
+                        <span th:unless="${item.timeToFinish != null}" th:text="'Data: Não disponível'"></span>
+                        <span th:unless="${item.timeToFinish != null}" th:text="'Horas: Não disponível'"></span>
+                    </div>
+                </td>
+                <td>
+                    <span th:if="${item.isCompleted} == true" th:text="Sim" />
+                    <span th:unless="${item.isCompleted} == true" th:text="Não" />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <a class="btn btn-outline-success" href="/create-todo">
+            <i class="bi bi-plus-square-fill"></i> Criar uma Tarefa</a>
+        </p>
+    </div>
+    <script th:src="@{/webjars/bootstrap/5.2.2/js/bootstrap.min.js}"></script>
+</body>
+</html>
